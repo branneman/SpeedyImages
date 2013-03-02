@@ -1,8 +1,12 @@
 # SpeedyPNG
 
-Author: Bran van der Meer — [http://bran.name/](http://bran.name/)  
+Author: Bran van der Meer â€” [http://bran.name/](http://bran.name/)  
 License: Public Domain
 
-Usage:
+## Requirements
+- Windows (I only tested it on Windows 8)
+- Python 3.3
 
-	SpeedyPNG.py [FILES...]
+## Usage:
+
+	python SpeedyPNG.py [FILES...]

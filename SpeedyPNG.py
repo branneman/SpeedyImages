@@ -3,6 +3,7 @@
 #  License: Public Domain
 #
 # TODO
+#  - add windows check
 #  - add python version check
 #  - add dependency check (see if all the tools are there)
 #  - add -q parameter for quiet version
