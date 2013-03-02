@@ -3,7 +3,6 @@
 #  License: Public Domain
 #
 # TODO
-#  - write report when done (% file size reduction)
 #  - add python version check
 #  - add dependency check (see if all the tools are there)
 #  - add -q parameter for quiet version
@@ -13,7 +12,7 @@
 
 from sys import argv
 from shutil import copy as fcopy
-from os import rename, remove, devnull
+from os import path, rename, remove, devnull
 from subprocess import call
 from copy import copy as vcopy
 
@@ -26,7 +25,7 @@ class Application:
 
     def __init__(self):
 
-        print('SpeedyPNG - v' + str(self.VERSION))
+        print('SpeedyPNG - v' + str(self.VERSION) + '\n')
 
         if len(argv) <= 1:
             return print(' Usage: ' + __file__ + ' [FILES...]')
@@ -41,6 +40,7 @@ class Application:
 
             print('  Optimizing ' + file)
 
+            originalBytes = self.getFilesize(file)
             self.createBackup(file)
 
             failure = False
@@ -57,11 +57,22 @@ class Application:
             if not failure:
                 self.removeBackup(file)
 
+            self.report(file, originalBytes)
+
     def createBackup(self, file):
         fcopy(file, file + '~')
 
     def removeBackup(self, file):
         remove(file + '~')
+
+    def getFilesize(self, file):
+        return path.getsize(file)
+
+    def report(self, file, originalBytes):
+        optimizedBytes  = self.getFilesize(file)
+        savedBytes      = originalBytes - optimizedBytes
+        savedPercentage = int(100 - (optimizedBytes / originalBytes) * 100)
+        print('  Saved ' + str(savedBytes) + ' bytes (of ' + str(originalBytes) + '), which is ' + str(savedPercentage) + '% savings from the original filesize.\n')
 
 class Optimizer:
 
