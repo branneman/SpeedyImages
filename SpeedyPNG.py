@@ -1,4 +1,4 @@
-# PngOptim
+# SpeedyPNG
 #  Author: Bran van der Meer — http://bran.name/
 #  License: Public Domain
 #
@@ -6,6 +6,7 @@
 #  - write report when done (% savings and all)
 #  - add python version check
 #  - add dependency check (see if all the tools are there)
+#  - add -q parameter for quiet version
 #  - create windows binary, if possible as single file distribution
 #  - graphical interface
 
@@ -48,11 +49,11 @@ def compress(file):
         remove(file + '~')
 
 # Welcome message
-print('PngOptim - v' + str(VERSION))
+print('SpeedyPNG - v' + str(VERSION))
 
 # Check for passed arguments
 if len(argv) == 1:
-    print('Usage: PngOptim.py [FILES...]')
+    print('Usage: SpeedyPNG.py [FILES...]')
 else:
     for arg in argv:
         if arg and arg.find(__file__) == -1:
