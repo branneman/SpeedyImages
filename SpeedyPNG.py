@@ -3,7 +3,6 @@
 #  License: Public Domain
 #
 # TODO
-#  - add pngrewrite & pngout
 #  - write report when done (% file size reduction)
 #  - add python version check
 #  - add dependency check (see if all the tools are there)
@@ -94,36 +93,32 @@ class Optimizer:
     def after(self):
         pass
 
-class pngrewrite(Optimizer):
-    commands = []
-
 class pngcrush(Optimizer):
-    commands = [['pngcrush.exe', '-q', '-rem', 'gAMA', '-rem', 'alla', '-rem', 'cHRM', '-rem', 'iCCP', '-rem', 'sRGB', '-rem', 'time', 0, 1]]
+    commands = [['pngcrush', '-q', '-rem', 'gAMA', '-rem', 'alla', '-rem', 'cHRM', '-rem', 'iCCP', '-rem', 'sRGB', '-rem', 'time', 0, 1]]
     def after(self):
         remove(self.file)
         rename(self.file + '~.tmp', self.file)
 
 class OptiPNG(Optimizer):
-    commands = [['optipng.exe', '-force', '-q', '-o7', 0]]
+    commands = [['optipng', '-force', '-q', '-o7', 0]]
 
 class AdvPNG(Optimizer):
-    commands = [['advpng.exe', '-qz4', 0]]
+    commands = [['advpng', '-qz4', 0]]
 
 class PNGOUT(Optimizer):
-    commands = []
+    commands = [['pngout', '-q', 0]]
 
 class DeflOpt(Optimizer):
-    commands = [['DeflOpt.exe', '/ds', 0]]
+    commands = [['DeflOpt', '/ds', 0]]
 
 # Create application instance
 app = Application()
 
 # Register tools
-#app.tools.append(pngrewrite)
 app.tools.append(pngcrush)
 app.tools.append(OptiPNG)
 app.tools.append(AdvPNG)
-#app.tools.append(PNGOUT)
+app.tools.append(PNGOUT)
 app.tools.append(DeflOpt)
 
 # Run!
