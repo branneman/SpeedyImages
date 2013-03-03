@@ -3,16 +3,17 @@
 #  License: Public Domain
 #
 # TODO
-#  - add dependency checks (windows? python version?)
+#  - add dependency checks (python version?)
 #  - add -q parameter for quiet version
 #  - add config for 'tool dir', 'backup & temp filenames'
 #  - graphical interface?
 
 from sys import argv
 from shutil import copy as fcopy
-from os import path, rename, remove, devnull
+from os import path, rename, remove, devnull, name as osname
 from subprocess import call
 from copy import copy as vcopy
+from platform import architecture
 
 class Application:
 
@@ -20,6 +21,7 @@ class Application:
 
     files = []
     tools = []
+    toolDir = 'tools/' + osname + '/' + architecture()[0] + '/'
 
     def __init__(self):
         print('SpeedyPNG - v' + str(self.VERSION))
@@ -27,7 +29,7 @@ class Application:
             print(' Usage: ' + __file__ + ' [FILES...]')
 
     def addTool(self, tool):
-        file = 'tools/' + tool.tool + '.exe'
+        file = self.toolDir + tool.tool + ('.exe' if osname == 'nt' else '')
         if path.exists(file):
             self.tools.append(tool)
         else:
@@ -99,13 +101,13 @@ class Optimizer:
         self.after()
 
     def getCommand(self):
-        return ['tools/' + self.tool] + self.commands + [self.file]
+        return [Application.toolDir + self.tool] + self.commands + [self.file]
 
 class pngcrush(Optimizer):
     tool = 'pngcrush'
     commands = ['-q', '-rem gAMA', '-rem alla', '-rem cHRM', '-rem iCCP', '-rem sRGB', '-rem time']
     def getCommand(self):
-        return ['tools/' + self.tool] + self.commands + [self.file, self.file + '~.tmp']
+        return [Application.toolDir + self.tool] + self.commands + [self.file, self.file + '~.tmp']
     def after(self):
         remove(self.file)
         rename(self.file + '~.tmp', self.file)
