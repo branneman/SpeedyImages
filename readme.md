@@ -19,6 +19,7 @@ It is currently only tested on Windows 8, but it _should_ work on other posix sy
 ---
 
 ## TODO
+ - rename project to 'SpeedyImages' and add jpeg support with jpegoptim, jpegrescan, jpegtran.
  - add tool binaries for posix
  - add -q parameter for quiet version
  - gui
