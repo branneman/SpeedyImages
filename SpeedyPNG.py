@@ -3,7 +3,6 @@
 #  License: Public Domain
 #
 # TODO
-#  - add dependency checks (python version?)
 #  - add -q parameter for quiet version
 #  - add config for 'tool dir', 'backup & temp filenames'
 #  - graphical interface?
