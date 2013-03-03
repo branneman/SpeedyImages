@@ -3,12 +3,9 @@
 #  License: Public Domain
 #
 # TODO
-#  - add windows check
-#  - add python version check
-#  - add dependency check (see if all the tools are there)
+#  - add dependency checks (windows? python version?)
 #  - add -q parameter for quiet version
-#  - make backup & temp filenames configurable
-#  - create windows binary, if possible as single file distribution
+#  - add config for 'tool dir', 'backup & temp filenames'
 #  - graphical interface?
 
 from sys import argv
@@ -25,21 +22,33 @@ class Application:
     tools = []
 
     def __init__(self):
+        print('SpeedyPNG - v' + str(self.VERSION))
+        if not self.processArguments():
+            print(' Usage: ' + __file__ + ' [FILES...]')
 
-        print('SpeedyPNG - v' + str(self.VERSION) + '\n')
+    def addTool(self, tool):
+        file = 'tools/' + tool.tool + '.exe'
+        if path.exists(file):
+            self.tools.append(tool)
+        else:
+            print(' Dependency not found: ' + file)
 
+    def processArguments(self):
         if len(argv) <= 1:
-            return print(' Usage: ' + __file__ + ' [FILES...]')
-
+            return False
         for arg in argv:
             if arg and arg.find(__file__) == -1:
-                self.files.append(arg)
+                if path.exists(arg):
+                    self.files.append(arg)
+                else:
+                    print(' File not found: ' + arg)
+        return True
 
     def run(self):
 
         for file in self.files:
 
-            print('  Optimizing ' + file)
+            print('\n  Optimizing: ' + file)
 
             originalBytes = self.getFilesize(file)
             self.createBackup(file)
@@ -50,15 +59,13 @@ class Application:
                     print('    Running ' + tool.__name__)
                     toolInstance = tool(file)
                     toolInstance.compress()
-
             except:
-                print('-Error while compressing ' + file)
+                print('  Error while compressing ' + file)
                 failure = True
 
             if not failure:
                 self.removeBackup(file)
-
-            self.report(file, originalBytes)
+                self.report(file, originalBytes)
 
     def createBackup(self, file):
         fcopy(file, file + '~')
@@ -73,7 +80,7 @@ class Application:
         optimizedBytes  = self.getFilesize(file)
         savedBytes      = originalBytes - optimizedBytes
         savedPercentage = int(100 - (optimizedBytes / originalBytes) * 100)
-        print('  Saved ' + str(savedBytes) + ' bytes (of ' + str(originalBytes) + '), which is ' + str(savedPercentage) + '% savings from the original filesize.\n')
+        print('  Saved ' + str(savedBytes) + ' bytes (of ' + str(originalBytes) + '), which is ' + str(savedPercentage) + '% savings.')
 
 class Optimizer:
 
@@ -83,55 +90,51 @@ class Optimizer:
     def before(self):
         pass
 
-    def compress(self):
-
-        self.before()
-
-        for command in self.commands:
-
-            cmd = vcopy(command)
-
-            cmd[0] = 'tools/' + cmd[0]
-            for key, part in enumerate(cmd):
-                if part == 0:
-                    cmd[key] = self.file
-                elif part == 1:
-                    cmd[key] = self.file + '~.tmp'
-
-            retcode = call(cmd, stdout = open(devnull, 'w'))
-
-        self.after()
-
     def after(self):
         pass
 
+    def compress(self):
+        self.before()
+        call(self.getCommand(), stdout = open(devnull, 'w'))
+        self.after()
+
+    def getCommand(self):
+        return ['tools/' + self.tool] + self.commands + [self.file]
+
 class pngcrush(Optimizer):
-    commands = [['pngcrush', '-q', '-rem', 'gAMA', '-rem', 'alla', '-rem', 'cHRM', '-rem', 'iCCP', '-rem', 'sRGB', '-rem', 'time', 0, 1]]
+    tool = 'pngcrush'
+    commands = ['-q', '-rem gAMA', '-rem alla', '-rem cHRM', '-rem iCCP', '-rem sRGB', '-rem time']
+    def getCommand(self):
+        return ['tools/' + self.tool] + self.commands + [self.file, self.file + '~.tmp']
     def after(self):
         remove(self.file)
         rename(self.file + '~.tmp', self.file)
 
 class OptiPNG(Optimizer):
-    commands = [['optipng', '-force', '-q', '-o7', 0]]
+    tool = 'optipng'
+    commands = ['-force', '-q', '-o7']
 
 class AdvPNG(Optimizer):
-    commands = [['advpng', '-qz4', 0]]
+    tool = 'advpng'
+    commands = ['-qz4']
 
 class PNGOUT(Optimizer):
-    commands = [['pngout', '-q', 0]]
+    tool = 'pngout'
+    commands = ['-q']
 
 class DeflOpt(Optimizer):
-    commands = [['DeflOpt', '/ds', 0]]
+    tool = 'DeflOpt'
+    commands = ['/ds']
 
 # Create application instance
 app = Application()
 
 # Register tools
-app.tools.append(pngcrush)
-app.tools.append(OptiPNG)
-app.tools.append(AdvPNG)
-app.tools.append(PNGOUT)
-app.tools.append(DeflOpt)
+app.addTool(pngcrush)
+app.addTool(OptiPNG)
+app.addTool(AdvPNG)
+app.addTool(PNGOUT)
+app.addTool(DeflOpt)
 
 # Run!
 app.run()
