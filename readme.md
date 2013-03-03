@@ -16,10 +16,9 @@ It is currently only tested on Windows 8, but it _should_ work on other posix sy
 
 ## [Download](https://github.com/branneman/SpeedyPNG/archive/master.zip)
 
----
-
-## TODO
- - rename project to 'SpeedyImages' and add jpeg support with jpegoptim, jpegrescan, jpegtran.
- - add tool binaries for posix
- - add -q parameter for quiet version
- - gui
+## Roadmap
+ - Add tool binaries for posix, and test them on linux and osx.
+ - Rename project to 'SpeedyImages' and add jpeg support with jpegoptim, jpegrescan, jpegtran.
+ - Create os-specific application binaries, so the 'python app.py' syntax isn't necessary anymore.
+ - Add -q parameter for quiet version.
+ - Add a GUI.
