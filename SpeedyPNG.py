@@ -1,11 +1,8 @@
 # SpeedyPNG
-#  Author: Bran van der Meer — http://bran.name/
+#
+#  Author:  Bran van der Meer — http://bran.name/
 #  License: Public Domain
 #
-# TODO
-#  - add -q parameter for quiet version
-#  - add config for 'tool dir', 'backup & temp filenames'
-#  - graphical interface?
 
 from sys import argv
 from shutil import copy as fcopy
