@@ -18,7 +18,9 @@ It is currently only tested on Windows 8, but it _should_ work on other posix sy
 
 ## Roadmap
  - Add tool binaries for posix, and test them on linux and osx.
- - Rename project to 'SpeedyImages' and add jpeg support with jpegoptim, jpegrescan, jpegtran.
+ - Rename project to 'SpeedyImages'
+   - Add jpeg support with jpegoptim, jpegrescan, jpegtran.
+   - Add svg support with svgo
  - Create os-specific application binaries, so the 'python app.py' syntax isn't necessary anymore.
  - Add -q parameter for quiet version.
  - Add a GUI.
