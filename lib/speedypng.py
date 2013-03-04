@@ -20,15 +20,19 @@ class Application:
     toolDir = 'tools/' + osname + '/' + architecture()[0] + '/'
 
     def __init__(self):
-        self.output('SpeedyPNG - v' + str(self.VERSION))
+        self.outputMessage('SpeedyPNG - v' + str(self.VERSION))
         if not self.processArguments():
-            self.output('\n Usage: ' + __file__ + ' [options] [files...]\n')
-            self.output(' Options:')
-            self.output('  -q  Quiet mode, will only output on error.')
-            self.output('  -s  Silent mode, will never output.\n')
+            self.outputMessage('\n Usage: ' + __file__ + ' [options] [files...]\n')
+            self.outputMessage(' Options:')
+            self.outputMessage('  -q  Quiet mode, will only output on error.')
+            self.outputMessage('  -s  Silent mode, will never output.\n')
 
-    def output(self, message):
-        if not '-q' in argv:
+    def outputMessage(self, message):
+        if not '-q' in argv and not '-s' in argv:
+            print(message)
+
+    def outputError(self, message):
+        if not '-s' in argv:
             print(message)
 
     def addTool(self, tool):
@@ -36,24 +40,25 @@ class Application:
         if path.exists(file):
             self.tools.append(tool)
         else:
-            self.output(' Dependency not found: ' + file)
+            self.outputError(' Dependency not found: ' + file)
 
     def processArguments(self):
-        if len(argv) <= 1:
-            return False
         for arg in argv:
             if arg and (not arg in ['-q']) and (arg.find(__file__) == -1):
                 if path.exists(arg):
                     self.files.append(arg)
                 else:
-                    self.output(' File not found: ' + arg)
+                    self.outputError(' File not found: ' + arg)
+        if len(argv) <= 1 or not len(self.files):
+            self.outputError('No files specified.')
+            return False
         return True
 
     def run(self):
 
         for file in self.files:
 
-            self.output('\n  Optimizing: ' + file)
+            self.outputMessage('\n  Optimizing: ' + file)
 
             originalBytes = self.getFilesize(file)
             self.createBackup(file)
@@ -61,11 +66,11 @@ class Application:
             failure = False
             try:
                 for tool in self.tools:
-                    self.output('    Running ' + tool.__name__)
+                    self.outputMessage('    Running ' + tool.__name__)
                     toolInstance = tool(file)
                     toolInstance.compress()
             except:
-                self.output('  Error while compressing ' + file)
+                self.outputError('  Error while compressing ' + file)
                 failure = True
 
             if not failure:
@@ -85,7 +90,7 @@ class Application:
         optimizedBytes  = self.getFilesize(file)
         savedBytes      = originalBytes - optimizedBytes
         savedPercentage = int(100 - (optimizedBytes / originalBytes) * 100)
-        self.output('  Saved ' + str(savedBytes) + ' bytes (of ' + str(originalBytes) + '), which is ' + str(savedPercentage) + '% savings.')
+        self.outputMessage('  Saved ' + str(savedBytes) + ' bytes (of ' + str(originalBytes) + '), which is ' + str(savedPercentage) + '% savings.')
 
 class Optimizer:
 
