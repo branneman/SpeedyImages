@@ -20,33 +20,37 @@ class Application:
     toolDir = 'tools/' + osname + '/' + architecture()[0] + '/'
 
     def __init__(self):
-        print('SpeedyPNG - v' + str(self.VERSION))
+        self.output('SpeedyPNG - v' + str(self.VERSION))
         if not self.processArguments():
-            print(' Usage: ' + __file__ + ' [FILES...]')
+            self.output(' Usage: ' + __file__ + ' [FILES...]')
+
+    def output(self, message):
+        if not '-q' in argv:
+            print(message)
 
     def addTool(self, tool):
         file = self.toolDir + tool.tool + ('.exe' if osname == 'nt' else '')
         if path.exists(file):
             self.tools.append(tool)
         else:
-            print(' Dependency not found: ' + file)
+            self.output(' Dependency not found: ' + file)
 
     def processArguments(self):
         if len(argv) <= 1:
             return False
         for arg in argv:
-            if arg and arg.find(__file__) == -1:
+            if arg and (not arg in ['-q']) and (arg.find(__file__) == -1):
                 if path.exists(arg):
                     self.files.append(arg)
                 else:
-                    print(' File not found: ' + arg)
+                    self.output(' File not found: ' + arg)
         return True
 
     def run(self):
 
         for file in self.files:
 
-            print('\n  Optimizing: ' + file)
+            self.output('\n  Optimizing: ' + file)
 
             originalBytes = self.getFilesize(file)
             self.createBackup(file)
@@ -54,11 +58,11 @@ class Application:
             failure = False
             try:
                 for tool in self.tools:
-                    print('    Running ' + tool.__name__)
+                    self.output('    Running ' + tool.__name__)
                     toolInstance = tool(file)
                     toolInstance.compress()
             except:
-                print('  Error while compressing ' + file)
+                self.output('  Error while compressing ' + file)
                 failure = True
 
             if not failure:
@@ -78,7 +82,7 @@ class Application:
         optimizedBytes  = self.getFilesize(file)
         savedBytes      = originalBytes - optimizedBytes
         savedPercentage = int(100 - (optimizedBytes / originalBytes) * 100)
-        print('  Saved ' + str(savedBytes) + ' bytes (of ' + str(originalBytes) + '), which is ' + str(savedPercentage) + '% savings.')
+        self.output('  Saved ' + str(savedBytes) + ' bytes (of ' + str(originalBytes) + '), which is ' + str(savedPercentage) + '% savings.')
 
 class Optimizer:
 
