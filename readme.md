@@ -11,9 +11,9 @@ You'll need [*Python 3.3*](http://www.python.org/download/) installed.
 ## Usage:
 	speedypng [options] [files...]
 
-	Options:
-	 -q  Quiet mode, will only output on error.
-	 -s  Silent mode, will never output.
+Options:  
+-q Quiet mode, will only output on error.  
+-s Silent mode, will never output.
 
 ## Roadmap
  - Create useful exitcodes.
