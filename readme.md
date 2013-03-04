@@ -17,12 +17,13 @@ It is currently only tested on Windows 8, but it _should_ work on posix systems 
 ## [Download](https://github.com/branneman/SpeedyPNG/archive/master.zip)
 
 ## Roadmap
+ - Add -q parameter for quiet version.
+ - Create useful exitcode, and make runtests.py run a quieted version and watch for the exit code.
  - Add tool binaries for posix, and test them on linux and osx.
  - Rename project to 'SpeedyImages'
    - Add jpeg support with jpegoptim, jpegrescan, jpegtran.
-   - Add svg support with svgo
+   - Add svg support with svgo.
  - Create os-specific application binaries, so the 'python app.py' syntax isn't necessary anymore.
- - Add -q parameter for quiet version.
  - Add 'overall report' when finished multiple files.
  - Add support for iterating a directory recursively.
  - Add a GUI.
