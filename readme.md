@@ -8,7 +8,7 @@ SpeedyPNG is a command line PNG optimization tool written in Python 3.3 for Wind
 ## Requirements
 - Python 3.3
 
-It is currently only tested on Windows 8, but it _should_ work on other posix systems as long as the binaries are available in the tools directory.
+It is currently only tested on Windows 8, but it _should_ work on posix systems as long as the binaries are available in the tools directory.
 
 ## Usage:
 
@@ -23,4 +23,6 @@ It is currently only tested on Windows 8, but it _should_ work on other posix sy
    - Add svg support with svgo
  - Create os-specific application binaries, so the 'python app.py' syntax isn't necessary anymore.
  - Add -q parameter for quiet version.
+ - Add 'overall report' when finished multiple files.
+ - Add support for iterating a directory recursively.
  - Add a GUI.
