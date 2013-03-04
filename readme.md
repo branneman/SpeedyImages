@@ -17,7 +17,6 @@ It is currently only tested on Windows 8, but it _should_ work on posix systems 
 ## [Download](https://github.com/branneman/SpeedyPNG/archive/master.zip)
 
 ## Roadmap
- - Add -q parameter for quiet version.
  - Create useful exitcode, and make runtests.py run a quieted version and watch for the exit code.
  - Add tool binaries for posix, and test them on linux and osx.
  - Rename project to 'SpeedyImages'
