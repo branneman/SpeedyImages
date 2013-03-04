@@ -22,7 +22,10 @@ class Application:
     def __init__(self):
         self.output('SpeedyPNG - v' + str(self.VERSION))
         if not self.processArguments():
-            self.output(' Usage: ' + __file__ + ' [FILES...]')
+            self.output('\n Usage: ' + __file__ + ' [options] [files...]\n')
+            self.output(' Options:')
+            self.output('  -q  Quiet mode, will only output on error.')
+            self.output('  -s  Silent mode, will never output.\n')
 
     def output(self, message):
         if not '-q' in argv:
