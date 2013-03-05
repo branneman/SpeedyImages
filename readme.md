@@ -9,18 +9,20 @@ SpeedyPNG is a command line PNG optimization tool written in Python. It optimize
 You'll need [*Python 3.3*](http://www.python.org/download/) installed.
 
 ## Usage:
-	speedypng [options] [files...]
+	./speedypng [options] [files...]
 
 Options:  
 -q Quiet mode, will only output on error.  
 -s Silent mode, will never output.
 
+The application will return an exit code of 0 on success, 1 on error.
+
 ## Roadmap
- - Create useful exitcodes.
  - Add tool binaries for posix systems.
  - Rename project to 'SpeedyImages':
    - Add jpeg support with jpegoptim, jpegrescan, jpegtran.
    - Add svg support with svgo.
  - Output 'overall report' when optimizing multiple files.
  - Add support for iterating a directory recursively.
+ - Refactor tests to python native unittests
  - Add a GUI.
