@@ -7,4 +7,4 @@ if sys.version_info < (3, 3):
     sys.exit(1)
 
 command = ['/usr/bin/env', 'python', 'lib/speedypng.py'] + sys.argv[1:]
-subprocess.call(command)
+sys.exit(subprocess.call(command))
