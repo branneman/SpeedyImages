@@ -46,16 +46,25 @@ class Application:
             self.outputError(' Dependency not found: ' + file)
 
     def processArguments(self):
+
+        filesSpecified = False
+
         for arg in argv:
-            if arg and (not arg in ['-q']) and (arg.find(__file__) == -1):
+            if not self.isParameterOption(arg) and (arg.find(__file__) == -1):
+                filesSpecified = True
                 if path.exists(arg):
                     self.files.append(arg)
                 else:
                     self.outputError(' File not found: ' + arg)
-        if len(argv) <= 1 or not len(self.files):
+
+        if len(argv) <= 1 or (not len(self.files) and not filesSpecified):
             self.outputError('No files specified.')
             return False
+
         return True
+
+    def isParameterOption(self, param):
+        return param in ['-q', '-s']
 
     def run(self):
 
