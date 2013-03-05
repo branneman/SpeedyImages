@@ -98,9 +98,10 @@ class Application:
 
     def report(self, file, originalBytes):
         optimizedBytes  = self.getFilesize(file)
-        savedBytes      = originalBytes - optimizedBytes
         savedPercentage = int(100 - (optimizedBytes / originalBytes) * 100)
-        self.outputMessage('  Saved ' + str(savedBytes) + ' bytes (of ' + str(originalBytes) + '), which is ' + str(savedPercentage) + '% savings.')
+        message = '  Reduced filesize %s%%: from %s to %s bytes.'
+        self.outputMessage(message % (savedPercentage, originalBytes, optimizedBytes))
+        #self.outputMessage('  Saved ' + str(savedBytes) + ' bytes (of ' + str(originalBytes) + '), which is ' + str(savedPercentage) + '% savings.')
 
 class Optimizer:
 
