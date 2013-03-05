@@ -4,7 +4,7 @@
 #  License: Public Domain
 #
 
-from sys import argv
+from sys import argv, exit
 from shutil import copy as fcopy
 from os import path, rename, remove, devnull, name as osname
 from subprocess import call
@@ -15,6 +15,8 @@ class Application:
 
     VERSION = 1.0
 
+    failure = 0
+
     files = []
     tools = []
     toolDir = 'tools/' + osname + '/' + architecture()[0] + '/'
@@ -22,7 +24,7 @@ class Application:
     def __init__(self):
         self.outputMessage('SpeedyPNG - v' + str(self.VERSION))
         if not self.processArguments():
-            self.outputMessage('\n Usage: ' + __file__ + ' [options] [files...]\n')
+            self.outputMessage('\n Usage: ./speedypng [options] [files...]\n')
             self.outputMessage(' Options:')
             self.outputMessage('  -q  Quiet mode, will only output on error.')
             self.outputMessage('  -s  Silent mode, will never output.\n')
@@ -32,6 +34,7 @@ class Application:
             print(message)
 
     def outputError(self, message):
+        self.failure = 1
         if not '-s' in argv:
             print(message)
 
@@ -63,19 +66,17 @@ class Application:
             originalBytes = self.getFilesize(file)
             self.createBackup(file)
 
-            failure = False
             try:
                 for tool in self.tools:
                     self.outputMessage('    Running ' + tool.__name__)
-                    toolInstance = tool(file)
-                    toolInstance.compress()
+                    tool(file).compress()
             except:
                 self.outputError('  Error while compressing ' + file)
-                failure = True
-
-            if not failure:
+            else:
                 self.removeBackup(file)
                 self.report(file, originalBytes)
+
+        return self.failure
 
     def createBackup(self, file):
         fcopy(file, file + '~')
@@ -147,4 +148,4 @@ app.addTool(PNGOUT)
 app.addTool(DeflOpt)
 
 # Run!
-app.run()
+exit(app.run())

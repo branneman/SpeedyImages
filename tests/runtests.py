@@ -1,6 +1,6 @@
 from sys import argv
 from shutil import copy as copy
-from os import listdir, path, remove
+from os import listdir, path, remove, name as osname
 from subprocess import call
 
 baseDir   = 'tests/'
@@ -24,7 +24,7 @@ def execute(files):
         files = ['-q'] + files
     else:
         print('-' * 80)
-    call(['python', 'SpeedyPNG.py'] + files)
+    call(['speedypng' + ('.bat' if osname == 'nt' else '.sh')] + files)
 
 # Test 1: All files
 for testfile in testfiles:
