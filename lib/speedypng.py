@@ -68,11 +68,13 @@ class Application:
 
     def run(self):
 
+        totalOriginalSize = self.getTotalFilesize()
+
         for file in self.files:
 
             self.outputMessage('\n  Optimizing: ' + file)
 
-            originalBytes = self.getFilesize(file)
+            originalSize = self.getFilesize(file)
             self.createBackup(file)
 
             try:
@@ -83,7 +85,10 @@ class Application:
                 self.outputError('  Error while compressing ' + file)
             else:
                 self.removeBackup(file)
-                self.report(file, originalBytes)
+                self.report(file, originalSize)
+
+        if len(self.files) > 1:
+            self.reportTotal(totalOriginalSize)
 
         return self.failure
 
@@ -96,12 +101,21 @@ class Application:
     def getFilesize(self, file):
         return path.getsize(file)
 
-    def report(self, file, originalBytes):
-        optimizedBytes  = self.getFilesize(file)
-        savedPercentage = int(100 - (optimizedBytes / originalBytes) * 100)
-        message = '  Reduced filesize %s%%: from %s to %s bytes.'
-        self.outputMessage(message % (savedPercentage, originalBytes, optimizedBytes))
-        #self.outputMessage('  Saved ' + str(savedBytes) + ' bytes (of ' + str(originalBytes) + '), which is ' + str(savedPercentage) + '% savings.')
+    def getTotalFilesize(self):
+        return sum([self.getFilesize(file) for file in self.files])
+
+    def report(self, file, originalSize):
+        optimizedSize = self.getFilesize(file)
+        percentage    = int(100 - (optimizedSize / originalSize) * 100)
+        message       = '  Reduced size with %s%%: from %s to %s bytes.'
+        self.outputMessage(message % (percentage, originalSize, optimizedSize))
+
+    def reportTotal(self, totalOriginalSize):
+        optimizedSize = self.getTotalFilesize()
+        savedBytes    = totalOriginalSize - optimizedSize
+        percentage    = int(100 - (optimizedSize / totalOriginalSize) * 100)
+        message       = '\n  Saved a total of %s%%, or %s bytes in %s files. '
+        self.outputMessage(message % (percentage, savedBytes, len(self.files)))
 
 class Optimizer:
 

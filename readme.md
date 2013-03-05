@@ -22,7 +22,6 @@ The application will return an exit code of 0 on success, 1 on error.
  - Rename project to 'SpeedyImages':
    - Add jpeg support with jpegoptim, jpegrescan, jpegtran.
    - Add svg support with svgo.
- - Output 'overall report' when optimizing multiple files.
  - Add support for iterating a directory recursively.
  - Refactor tests to python native unittests
  - Add a GUI.
