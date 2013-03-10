@@ -1,7 +1,7 @@
 # SpeedyPNG
 
 Author: Bran van der Meer — [http://bran.name/](http://bran.name/)  
-License: Public Domain
+License: Public Domain. The tool (binaries) have their own licenses.
 
 SpeedyPNG is a command line PNG optimization tool written in Python. It optimizes by running the PNG through pngcrush, OptiPNG, AdvPNG, PNGOUT and DeflOpt.
 
@@ -18,10 +18,11 @@ Options:
 The application will return an exit code of 0 on success, 1 on error.
 
 ## Roadmap
+ - Refactor for maximum reuse of code.
+ - Add support for iterating a directory recursively.
+ - Refactor tests to python native unittests
  - Add tool binaries for posix systems.
  - Rename project to 'SpeedyImages':
    - Add jpeg support with jpegoptim, jpegrescan, jpegtran.
    - Add svg support with svgo.
- - Add support for iterating a directory recursively.
- - Refactor tests to python native unittests
- - Add a GUI.
+ - Add a GUI (Tk? GTK? Qt? wx?).
