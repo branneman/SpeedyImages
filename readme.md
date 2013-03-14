@@ -9,9 +9,10 @@ SpeedyImages is a command line image optimization tool written in Python. It opt
 You'll need [*Python 3.3*](http://www.python.org/download/) installed.
 
 ## Usage:
-	./speedypng [options] [files...]
+	./speedyimages [options] [files...]
 
 Options:  
+-v Show version, but will show nothing when combined with -s).  
 -q Quiet mode, will only output on error.  
 -s Silent mode, will never output.
 
