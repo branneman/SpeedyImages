@@ -4,6 +4,7 @@ from sys import argv
 
 from queue.item import QueueItem
 from optimizer.png import png
+from report import report
 
 class App:
 
@@ -49,22 +50,47 @@ class App:
                     if self.isFile(file) and self.isSupportedFile(file):
                         self.queue.append(QueueItem(file))
 
+    # move to fileutil
     def isOption(self, arg):
         return arg in self.options.keys()
 
+    # move to fileutil
     def isFile(self, arg):
         return path.exists(arg) and path.isfile(arg)
 
+    # move to fileutil
     def isDirectory(self, arg):
         return path.exists(arg) and path.isdir(arg)
 
+    # move to fileutil
     def isSupportedFile(self, arg):
         return path.splitext(arg)[1] in [cl.ext for cl in self.optimizers]
 
-    # todo implement
+    # move to fileutil & implement
     def getFilesInDirectory(self, arg):
         return []
 
     def run(self):
-        for queueitem in self.queue:
-            logging.warning('Optimize()\'ing ' + queueitem.filename)
+
+        filenames = [q.filename for q in self.queue]
+        results = report(filenames)
+
+        for item in self.queue:
+
+            logging.info('\n  Optimizing: ' + item.filename)
+
+            item.createBackup()
+
+            try:
+                pass
+                # implement something like item.getFiletype
+                #for tool in self.tools:
+                #    logging.info('    Running ' + tool.__name__)
+                #    tool(file).compress()
+            except:
+                logging.error('  Error while compressing ' + file)
+            else:
+                item.removeBackup()
+                results.reportItem(item)
+
+        results.reportTotals(filenames)
