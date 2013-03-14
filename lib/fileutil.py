@@ -3,6 +3,12 @@ from os import path, remove
 
 class fileutil:
 
+    def isFile(file):
+        return path.exists(file) and path.isfile(file)
+
+    def isDirectory(file):
+        return path.exists(file) and path.isdir(file)
+
     def createBackup(file):
         copy(file, file + '~')
 

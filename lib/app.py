@@ -4,6 +4,7 @@ from sys import argv
 
 from queue.item import QueueItem
 from optimizer.png import png
+from fileutil import fileutil
 from report import report
 
 class App:
@@ -42,33 +43,19 @@ class App:
 
         for arg in argv:
 
-            if self.isFile(arg) and self.isSupportedFile(arg):
+            if fileutil.isFile(arg) and self.isSupportedFile(arg):
                 self.queue.append(QueueItem(arg))
 
-            elif self.isDirectory(arg):
-                for file in self.getFilesInDirectory():
-                    if self.isFile(file) and self.isSupportedFile(file):
+            elif fileutil.isDirectory(arg):
+                for file in fileutil.getFilesInDirectory():
+                    if fileutil.isFile(file) and self.isSupportedFile(file):
                         self.queue.append(QueueItem(file))
 
-    # move to fileutil
     def isOption(self, arg):
         return arg in self.options.keys()
 
-    # move to fileutil
-    def isFile(self, arg):
-        return path.exists(arg) and path.isfile(arg)
-
-    # move to fileutil
-    def isDirectory(self, arg):
-        return path.exists(arg) and path.isdir(arg)
-
-    # move to fileutil
     def isSupportedFile(self, arg):
         return path.splitext(arg)[1] in [cl.ext for cl in self.optimizers]
-
-    # move to fileutil & implement
-    def getFilesInDirectory(self, arg):
-        return []
 
     def run(self):
 
