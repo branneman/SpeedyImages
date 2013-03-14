@@ -1,3 +1,4 @@
+from os import devnull
 from subprocess import call
 
 class tool:

@@ -38,12 +38,15 @@ class App:
                 self.options[arg] = True
 
     def processFileArguments(self):
+
         for arg in argv:
+
             if self.isFile(arg) and self.isSupportedFile(arg):
                 self.queue.append(QueueItem(arg))
+
             elif self.isDirectory(arg):
                 for file in self.getFilesInDirectory():
-                    if self.isSupportedFile(arg):
+                    if self.isFile(file) and self.isSupportedFile(file):
                         self.queue.append(QueueItem(file))
 
     def isOption(self, arg):
@@ -62,6 +65,6 @@ class App:
     def getFilesInDirectory(self, arg):
         return []
 
-    def run(self, file):
+    def run(self):
         for queueitem in self.queue:
-            logging.info('Optimize()\'ing ' + queueitem.filename)
+            logging.warning('Optimize()\'ing ' + queueitem.filename)

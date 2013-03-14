@@ -1,8 +1,8 @@
 from optimizer.optimizer import optimizer
-from optimizer.tool.deflopt import deflopt
+from optimizer.tool import *
 
 class png(optimizer):
 
     ext = '.png'
 
-    tools = [deflopt]
+    tools = [pngcrush, optipng, advpng, pngout, deflopt]
