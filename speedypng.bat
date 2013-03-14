@@ -10,7 +10,7 @@ if not exist "%PYTHON%" goto nopython
 python.exe -c "import sys; (exit(0) if sys.version_info >= (3, 3) else exit(1))"
 if %errorlevel% GEQ 1 goto nopython
 
-python.exe lib/speedypng.py %*
+python.exe lib/cli.py %*
 if %errorlevel% GEQ 1 exit /b %errorlevel%
 exit /b
 
