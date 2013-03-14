@@ -24,7 +24,7 @@ def execute(files):
         files = ['-q'] + files
     else:
         print('-' * 80)
-    call(['speedypng' + ('.bat' if osname == 'nt' else '.sh')] + files)
+    call(['speedyimages' + ('.bat' if osname == 'nt' else '.sh')] + files)
 
 # Test 1: All files
 for testfile in testfiles:

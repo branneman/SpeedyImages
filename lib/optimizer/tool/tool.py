@@ -17,6 +17,5 @@ class tool:
         self.after()
 
     def getCommand(self):
-        raise 'tool.py!!!!'
         toolDir = ''
         return [toolDir + self.tool] + self.commands + [self.file]

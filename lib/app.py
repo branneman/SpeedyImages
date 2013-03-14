@@ -8,7 +8,7 @@ from optimizer.png import png
 class App:
 
     name = 'SpeedyImages'
-    VERSION = 1.0
+    VERSION = 1.1
 
     options = {
         '-v': False,
