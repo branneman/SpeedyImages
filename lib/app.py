@@ -57,6 +57,12 @@ class App:
     def isSupportedFile(self, arg):
         return path.splitext(arg)[1] in [cl.ext for cl in self.optimizers]
 
+    def getOptimizer(self, item):
+        for optimizer in self.optimizers:
+            if optimizer.ext == item.filetype:
+                return optimizer
+        return False
+
     def run(self):
 
         filenames = [q.filename for q in self.queue]
@@ -64,18 +70,18 @@ class App:
 
         for item in self.queue:
 
-            logging.info('\n  Optimizing: ' + item.filename)
+            logging.info('\n  Optimizing: ' + str(item))
 
             item.createBackup()
 
             try:
-                pass
-                # implement something like item.getFiletype
-                #for tool in self.tools:
-                #    logging.info('    Running ' + tool.__name__)
-                #    tool(file).compress()
+                for tool in self.getOptimizer(item).tools:
+                    logging.info('    Running ' + tool.__name__)
+                    tool(item).execute()
+
             except:
-                logging.error('  Error while compressing ' + file)
+                logging.error('  Error while compressing \'' + str(item) + '\'')
+
             else:
                 item.removeBackup()
                 results.reportItem(item)

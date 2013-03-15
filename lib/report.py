@@ -10,9 +10,9 @@ class report:
 
     def reportItem(self, item):
         optimizedSize = fileutil.getFilesize(item.filename)
-        percentage    = int(100 - (optimizedSize / item.size) * 100)
+        percentage    = int(100 - (optimizedSize / item.filesize) * 100)
         message       = '  Reduced size with %s%%: from %s to %s bytes.'
-        logging.info(message % (percentage, item.size, optimizedSize))
+        logging.info(message % (percentage, item.filesize, optimizedSize))
 
     def reportTotals(self, filenames):
         optimizedSize = fileutil.getTotalFilesize(filenames)

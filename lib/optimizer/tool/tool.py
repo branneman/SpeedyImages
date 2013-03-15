@@ -1,10 +1,13 @@
-from os import devnull
+from os import devnull, name as osname
 from subprocess import call
+from platform import architecture
 
 class tool:
 
-    def __init__(self, file):
-        self.file = file
+    toolDir = 'tools/' + osname + '/' + architecture()[0] + '/'
+
+    def __init__(self, item):
+        self.file = item.filename
 
     def before(self):
         pass
@@ -12,11 +15,10 @@ class tool:
     def after(self):
         pass
 
-    def compress(self):
+    def execute(self):
         self.before()
         call(self.getCommand(), stdout = open(devnull, 'w'))
         self.after()
 
     def getCommand(self):
-        toolDir = ''
-        return [toolDir + self.tool] + self.commands + [self.file]
+        return [self.toolDir + self.tool] + self.commands + [self.file]
