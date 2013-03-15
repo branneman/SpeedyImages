@@ -18,8 +18,15 @@ class App:
         '-s': False
     }
 
+    dependenciesNotFound = []
     optimizers = [png()]
     queue = []
+
+    def bootstrap(self):
+        self.processOptionArguments()
+        self.setupLogging()
+        self.processFileArguments()
+        self.checkDependencies()
 
     def setupLogging(self):
 
@@ -56,6 +63,12 @@ class App:
 
     def isSupportedFile(self, arg):
         return path.splitext(arg)[1] in [cl.ext for cl in self.optimizers]
+
+    def checkDependencies(self):
+        for optimizer in self.optimizers:
+            notfound = optimizer.checkDependencies()
+            if notfound:
+                self.dependenciesNotFound += notfound
 
     def getOptimizer(self, item):
         for optimizer in self.optimizers:

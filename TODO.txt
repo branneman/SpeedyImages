@@ -1,0 +1,2 @@
+- add file not found check:
+    self.outputError(' File not found: ' + arg)

@@ -6,10 +6,9 @@ class CLI(App):
 
     def __init__(self):
 
-        self.processOptionArguments()
-        self.setupLogging()
+        self.bootstrap()
         self.welcome()
-        self.processFileArguments()
+        self.dependencies()
 
         if len(self.queue):
             self.run()
@@ -20,10 +19,14 @@ class CLI(App):
         lvl = logging.WARNING if self.options['-v'] else logging.INFO
         logging.log(lvl, self.name + ' - v' + str(self.VERSION))
 
+    def dependencies(self):
+        for dependency in self.dependenciesNotFound:
+            logging.error(' Dependency not found: ' + dependency.tool)
+
     def usage(self):
         logging.warning('\n Usage: ./speedyimages [options] [files...]\n')
         logging.warning(' Options:')
-        logging.warning('  -v  Show version, but will show nothing when combined with -s).')
+        logging.warning('  -v  Show version (will show nothing when combined with -s).')
         logging.warning('  -q  Quiet mode, will only output on error.')
         logging.warning('  -s  Silent mode, will never output.\n')
 
