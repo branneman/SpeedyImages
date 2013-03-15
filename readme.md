@@ -19,9 +19,9 @@ Options:
 The application will return an exit code of 0 on success, 1 on error.
 
 ## Roadmap
- - Refactor for maximum reuse of code.
  - Add support for iterating a directory recursively.
  - Refactor tests to python native unittests
+ - Refactor to a coding standard.
  - Add tool binaries for posix systems.
  - Add jpeg support with jpegoptim, jpegrescan, jpegtran.
  - Add svg support with svgo.
