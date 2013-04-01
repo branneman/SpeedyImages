@@ -1,2 +1,1 @@
-- add file not found check:
-    self.outputError(' File not found: ' + arg)
+- Exit codes of 0 or 1

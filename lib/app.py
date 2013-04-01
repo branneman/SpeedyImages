@@ -18,22 +18,24 @@ class App:
         '-s': False
     }
 
-    dependenciesNotFound = []
+    argumentsNotRecognized = []
+    unsupportedFiles       = []
+    dependenciesNotFound   = []
+
     optimizers = [png()]
     queue = []
 
     def bootstrap(self):
-        self.processOptionArguments()
         self.setupLogging()
-        self.processFileArguments()
         self.checkDependencies()
+        self.processArguments()
 
     def setupLogging(self):
 
         lvl = 'INFO'
-        if self.options['-q']:
+        if '-q' in argv:
             lvl = 'WARNING'
-        if self.options['-s']:
+        if '-s' in argv:
             lvl = 'ERROR'
 
         logging.basicConfig(
@@ -41,34 +43,41 @@ class App:
             format = '%(message)s'
         )
 
-    def processOptionArguments(self):
-        for arg in argv:
-            if self.isOption(arg):
-                self.options[arg] = True
-
-    def processFileArguments(self):
-
-        for arg in argv:
-
-            if fileutil.isFile(arg) and self.isSupportedFile(arg):
-                self.queue.append(QueueItem(arg))
-
-            elif fileutil.isDirectory(arg):
-                for file in fileutil.getFilesInDirectory():
-                    if fileutil.isFile(file) and self.isSupportedFile(file):
-                        self.queue.append(QueueItem(file))
-
-    def isOption(self, arg):
-        return arg in self.options.keys()
-
-    def isSupportedFile(self, arg):
-        return path.splitext(arg)[1] in [cl.ext for cl in self.optimizers]
-
     def checkDependencies(self):
         for optimizer in self.optimizers:
             notfound = optimizer.checkDependencies()
             if notfound:
                 self.dependenciesNotFound += notfound
+
+    def processArguments(self):
+
+        for arg in argv:
+
+            if self.isOption(arg):
+                self.options[arg] = True
+
+            elif fileutil.isFile(arg):
+                if self.isSupportedFile(arg):
+                    self.queue.append(QueueItem(arg))
+                elif not self.isSelf(arg):
+                    self.unsupportedFiles.append(arg)
+
+            elif fileutil.isDirectory(arg):
+                for file in fileutil.getFilesInDirectory(arg):
+                    if fileutil.isFile(arg) and self.isSupportedFile(arg):
+                        self.queue.append(QueueItem(arg))
+
+            else:
+                self.argumentsNotRecognized.append(arg)
+
+    def isOption(self, arg):
+        return arg in self.options.keys()
+
+    def isSupportedFile(self, arg):
+        return fileutil.getFiletype(arg) in [cl.ext for cl in self.optimizers]
+
+    def isSelf(self, arg):
+        return arg.split('/')[-1] in ['cli.py', 'gui.py']
 
     def getOptimizer(self, item):
         for optimizer in self.optimizers:
