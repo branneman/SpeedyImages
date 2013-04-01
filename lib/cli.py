@@ -14,9 +14,6 @@ class CLI(App):
 
         self.errors()
 
-        if len(self.queue):
-            self.run()
-
     def welcome(self):
         lvl = logging.WARNING if self.options['-v'] else logging.INFO
         logging.log(lvl, self.name + ' - v' + str(self.VERSION))
@@ -35,4 +32,9 @@ class CLI(App):
         logging.warning('  -s  Silent mode, will never output.\n')
 
 if __name__ == '__main__':
-    CLI()
+    try:
+        application = CLI()
+        exit(application.run())
+    except:
+        logging.critical('Internal error')
+        exit(1)

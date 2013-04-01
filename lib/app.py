@@ -18,6 +18,7 @@ class App:
         '-s': False
     }
 
+    failure = 0
     argumentsNotRecognized = []
     unsupportedFiles       = []
     dependenciesNotFound   = []
@@ -47,6 +48,7 @@ class App:
         for optimizer in self.optimizers:
             notfound = optimizer.checkDependencies()
             if notfound:
+                self.failure = 1
                 self.dependenciesNotFound += notfound
 
     def processArguments(self):
@@ -60,6 +62,7 @@ class App:
                 if self.isSupportedFile(arg):
                     self.queue.append(QueueItem(arg))
                 elif not self.isSelf(arg):
+                    self.failure = 1
                     self.unsupportedFiles.append(arg)
 
             elif fileutil.isDirectory(arg):
@@ -68,6 +71,7 @@ class App:
                         self.queue.append(QueueItem(arg))
 
             else:
+                self.failure = 1
                 self.argumentsNotRecognized.append(arg)
 
     def isOption(self, arg):
@@ -87,6 +91,9 @@ class App:
 
     def run(self):
 
+        if not len(self.queue):
+            return 1
+
         filenames = [q.filename for q in self.queue]
         results = report(filenames)
 
@@ -102,6 +109,7 @@ class App:
                     tool(item).execute()
 
             except:
+                self.failure = 1
                 logging.error('  Error while compressing \'' + str(item) + '\'')
 
             else:
@@ -109,3 +117,5 @@ class App:
                 results.reportItem(item)
 
         results.reportTotals(filenames)
+
+        return self.failure

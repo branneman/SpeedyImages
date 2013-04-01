@@ -12,18 +12,8 @@ You'll need [*Python 3.3*](http://www.python.org/download/) installed.
 	./speedyimages [options] [files...]
 
 Options:  
--v Show version, but will show nothing when combined with -s).  
--q Quiet mode, will only output on error.  
--s Silent mode, will never output.
+`-v` Show version, but will show nothing when combined with -s).  
+`-q` Quiet mode, will only output on error.  
+`-s` Silent mode, will never output.
 
-The application will return an exit code of 0 on success, 1 on error.
-
-## Roadmap
- - Add test to find the best optimization tool order automatically.
- - Add support for iterating a directory recursively.
- - Refactor tests to python native unittests.
- - Refactor to a coding standard.
- - Add tool binaries for posix systems.
- - Add jpeg support with jpegoptim, jpegrescan, jpegtran.
- - Add svg support with svgo.
- - Add a GUI (Tk? GTK? Qt? wx?).
+The CLI application will return an exit code of 0 on success, 1 on error.
