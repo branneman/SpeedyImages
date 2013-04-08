@@ -34,7 +34,8 @@ class CLI(App):
 if __name__ == '__main__':
     try:
         application = CLI()
-        exit(application.run())
+        code = application.run()
     except:
         logging.critical('Internal error')
-        exit(1)
+        code = 1
+    exit(code)
