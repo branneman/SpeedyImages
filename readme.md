@@ -17,3 +17,12 @@ Options:
 `-s` Silent mode, will never output.
 
 The CLI application will return an exit code of 0 on success, 1 on error.
+
+## Changelog
+
+- Version 1.1:
+  - Project is now named 'SpeedyImages'
+  - Refactor release, rewritten from the ground up
+
+- Version 1.0:
+  - Initial version, CLI-only
